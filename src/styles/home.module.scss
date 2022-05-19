@@ -115,3 +115,28 @@
     font-weight: 700;
   }
 }
+
+.errorMessageContainer {
+  width: 100%;
+
+  margin-top: 3rem;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  .errorMessage {
+    text-align: center;
+
+    font-family: 'Montserrat', sans-serif;
+    font-size: 3rem;
+    line-height: 2.875rem;
+    font-weight: 700;
+
+    color: var(--orange-500);
+
+    span {
+      color: var(--blue-500);
+    }
+  }
+}

@@ -8,6 +8,7 @@ export function App() {
   const [artist, setArtist] = useState('');
   const [song, setSong] = useState('');
   const [lyrics, setLyrics] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
 
   async function getLyrics(event: FormEvent) {
     event.preventDefault();
@@ -19,7 +20,16 @@ export function App() {
     const response = await fetch(
       `https://api.lyrics.ovh/v1/${artist}}/${song}`
     );
+    const { status } = response;
+    if (status !== 200) {
+      if (status === 404) {
+        setErrorMessage('<span>Artist</span> or <span>Song</span> not found');
+      }
+      return;
+    }
+
     const { lyrics } = await response.json();
+    setErrorMessage('');
     setLyrics(lyrics);
   }
 
@@ -62,9 +72,18 @@ export function App() {
         </button>
       </form>
 
-      {lyrics && (
+      {lyrics && !errorMessage && (
         <section className={styles.lyricsContainer}>
           <p className={styles.lyrics}>{lyrics}</p>
+        </section>
+      )}
+
+      {errorMessage && (
+        <section className={styles.errorMessageContainer}>
+          <span
+            className={styles.errorMessage}
+            dangerouslySetInnerHTML={{ __html: errorMessage }}
+          ></span>
         </section>
       )}
     </main>
