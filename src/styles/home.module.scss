@@ -116,6 +116,21 @@
   }
 }
 
+.loadingContainer {
+  width: 25%;
+
+  margin-top: 2rem;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  .loadingGif {
+    width: 100%;
+    object-fit: cover;
+  }
+}
+
 .errorMessageContainer {
   width: 100%;
 

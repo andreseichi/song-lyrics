@@ -1,5 +1,7 @@
 import { FormEvent, useState } from 'react';
 
+import LoadingIcon from './assets/loading.gif';
+
 import './styles/global.scss';
 
 import styles from './styles/home.module.scss';
@@ -9,6 +11,7 @@ export function App() {
   const [song, setSong] = useState('');
   const [lyrics, setLyrics] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
   async function getLyrics(event: FormEvent) {
     event.preventDefault();
@@ -17,20 +20,24 @@ export function App() {
       return;
     }
 
+    setIsLoading(true);
     const response = await fetch(
       `https://api.lyrics.ovh/v1/${artist}}/${song}`
     );
+
     const { status } = response;
     if (status !== 200) {
       if (status === 404) {
         setErrorMessage('<span>Artist</span> or <span>Song</span> not found');
       }
+      setIsLoading(false);
       return;
     }
 
     const { lyrics } = await response.json();
     setErrorMessage('');
     setLyrics(lyrics);
+    setIsLoading(false);
   }
 
   return (
@@ -72,13 +79,19 @@ export function App() {
         </button>
       </form>
 
-      {lyrics && !errorMessage && (
+      {isLoading && (
+        <div className={styles.loadingContainer}>
+          <img src={LoadingIcon} alt="Loading" className={styles.loadingGif} />
+        </div>
+      )}
+
+      {lyrics && !isLoading && !errorMessage && (
         <section className={styles.lyricsContainer}>
           <p className={styles.lyrics}>{lyrics}</p>
         </section>
       )}
 
-      {errorMessage && (
+      {errorMessage && !isLoading && (
         <section className={styles.errorMessageContainer}>
           <span
             className={styles.errorMessage}
