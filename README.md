@@ -32,8 +32,10 @@ or
 
 ### 🧭 Install all dependencies with yarn
 
-`yarn install`
+`yarn`
 
 ### 🔨 Build it
 
 `yarn build`
+
+## [Demo]('https://song-lyrics-gamma.vercel.app/')
